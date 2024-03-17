@@ -5,12 +5,18 @@ $(document).ready(function () {
 function homePage() {
     $.get("data/homepagephotos.json", function (data) {
         var linkList = $("#container");
-        linkList.empty();
+        linkList.innerHTML = ""
 
         for (let i = 0; i < data.length; i++) {
             var photoBox = $("<div>").addClass("photo-box");
 
-            var subLink = $("<a class='link-destination'>").attr("href", "#");
+            var subLink = $("<a class='link-destination'>").attr("href", "pages/destinations.html");
+
+            subLink.click(function(event) {
+                event.preventDefault();
+                $.cookie("title", encodeURIComponent(data[i].title));
+                $(location).attr("href", "pages/destinations.html");
+            });
 
             var image = $("<img>").attr("src", "photos/" + data[i].name)
                 .attr("width", 400)
@@ -30,14 +36,3 @@ function homePage() {
         }
     });
 }
-
-{/* <div class="photo-box" id="photo-box">
-<a class="link-destination" href="#">
-<img src="photos/cairn.jpg" alt="cairn" height="200" width="400" />
-<div class="content">
- <h1>Cairn</h1>
- <h3>
-   It is a nice place.
-</div>
-</a>  
-   </div> */}
