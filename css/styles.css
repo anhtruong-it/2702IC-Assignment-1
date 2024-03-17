@@ -1,7 +1,17 @@
+body,
+html {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    position: relative;
+}
+
+
 .photo-box {
     font-size: 14px;
     border: 1px solid black;
-    padding: 20px; /* Shortened padding declaration */
+    padding: 20px;
+    /* Shortened padding declaration */
     margin: 5px;
     text-align: left;
     width: 700px;
@@ -14,8 +24,8 @@
     font-weight: 700 !important;
     letter-spacing: 3px;
     background: none;
-    -webkit-box-shadow: 0px 5px 40px -10px rgba(0,0,0,0.57);
-    -moz-box-shadow: 0px 5px 40px -10px rgba(0,0,0,0.57);
+    -webkit-box-shadow: 0px 5px 40px -10px rgba(0, 0, 0, 0.57);
+    -moz-box-shadow: 0px 5px 40px -10px rgba(0, 0, 0, 0.57);
     transition: all 0.9s ease 0s;
 }
 
@@ -23,11 +33,29 @@
     letter-spacing: 0;
 }
 
+.header {
+    height: 80px;
+    width: 100%;
+    top: 0;
+    text-align: center;
+    padding: 10px;
+    position:static;
+    flex-direction: column;
+    display: flex;
+    align-items: center;
+    place-items: inherit;
+    /* background-color: rgba(255, 255, 255, 0.7); */
+    z-index: 2;
+}
+
 .container {
+    
     flex: 2;
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
+    position: relative;
+    z-index: 1;
 }
 
 .content {
@@ -61,6 +89,4 @@
     gap: 10px;
     text-decoration: none;
 }
-
-
 
