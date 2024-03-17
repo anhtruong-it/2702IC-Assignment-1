@@ -1,0 +1,66 @@
+.photo-box {
+    font-size: 14px;
+    border: 1px solid black;
+    padding: 20px; /* Shortened padding declaration */
+    margin: 5px;
+    text-align: left;
+    width: 700px;
+    overflow: hidden;
+    border-radius: 10px;
+}
+
+.photo-box:hover {
+    color: #404040 !important;
+    font-weight: 700 !important;
+    letter-spacing: 3px;
+    background: none;
+    -webkit-box-shadow: 0px 5px 40px -10px rgba(0,0,0,0.57);
+    -moz-box-shadow: 0px 5px 40px -10px rgba(0,0,0,0.57);
+    transition: all 0.9s ease 0s;
+}
+
+.photo-box:hover .content h3 {
+    letter-spacing: 0;
+}
+
+.container {
+    flex: 2;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.content {
+    width: calc(100% - 410px);
+    display: block;
+}
+
+.content h1 {
+    padding-left: 10px;
+    width: 290px;
+    height: 30px;
+    margin: 0;
+}
+
+.content h3 {
+    padding: 10px;
+    padding-top: 0;
+    width: 270px;
+    height: 126px;
+    word-wrap: break-word;
+    overflow: hidden;
+    overflow-y: hidden;
+}
+
+.container h3:hover {
+    overflow-y: scroll;
+}
+
+.link-destination {
+    display: flex;
+    gap: 10px;
+    text-decoration: none;
+}
+
+
+
