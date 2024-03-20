@@ -1,6 +1,3 @@
-// initial flickr information
-const apiKey = "api_key=84bcbeb63edc1c2b591367fcc07c81c1";
-
 $(document).ready(function () {
     getAlbumId()
         .then(function (id) {
@@ -40,7 +37,7 @@ async function getAlbumId() {
 // display 5 thumbnails of each destination
 async function displayThumbnails(albumId) {
     console.log("id", albumId);
-    const requestAlbumUrl = "https://api.flickr.com/services/rest/?method=flickr.photosets.getPhotos&format=json&nojsoncallback=1" + "&" + apiKey+ "&" + albumId;
+    const requestAlbumUrl = "https://api.flickr.com/services/rest/?method=flickr.photosets.getPhotos&format=json&nojsoncallback=1" + "&" + apiKey + "&" + albumId;
     console.log("url: ", requestAlbumUrl);
 
     const linkList = $("#container");
