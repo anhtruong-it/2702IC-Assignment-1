@@ -6,12 +6,10 @@ html {
     position: relative;
 }
 
-
 .photo-box {
     font-size: 14px;
     border: 1px solid black;
     padding: 20px;
-    /* Shortened padding declaration */
     margin: 5px;
     text-align: left;
     width: 700px;
@@ -44,12 +42,9 @@ html {
     display: flex;
     align-items: center;
     place-items: inherit;
-    /* background-color: rgba(255, 255, 255, 0.7); */
-    z-index: 2;
 }
 
 .container {
-    
     flex: 2;
     display: flex;
     justify-content: center;
@@ -90,3 +85,36 @@ html {
     text-decoration: none;
 }
 
+#modal-container {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    padding-top: 100px;
+    left: 0; top: 0;
+    width: 100%; height: 80%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.9);
+}
+
+#modal-close {
+    position: absolute;
+    top: 15px;
+    right: 35px;
+    color: white;
+    font-size: 40px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+#modal-content {
+    display: block;
+    margin: auto;
+    width: 80%;
+    height: 80%;
+}
+
+#modal-caption {
+    text-align: center;
+    color: #ccc;
+    padding-top: 10px;
+}
