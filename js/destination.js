@@ -69,7 +69,7 @@ function getSize(photo) {
 
     $.get(getSizeStr, function (data) {
         let thumb = data.sizes.size[5].source;
-        let photos = [{ file: thumb, title: photo.title }];
+        let photos = [{ file: thumb, title: photo.title, id: photo.id }];
         displayFullSize(photos)
     });
 }
@@ -83,9 +83,29 @@ function displayFullSize(photos) {
     $("#container").append(htmlStr);
 
     // display a photo modal
-    $("figure").last().click(function() {
+    $("figure").last().click(function () {
         $("#modal-container").css("display", "block");
         $("#modal-content").attr("src", $(this).attr("data-full"));
         $("#modal-caption").text(photos[0].title);
+        recentViewedPhoto(photos[0].id);
     });
+}
+
+// store recent viewed photo
+function recentViewedPhoto(id) {
+    //localStorage.removeItem("recentView");
+    let jsonData = JSON.parse(localStorage.getItem("recentView")) || [];
+    console.log("f",jsonData);
+
+    // jsonData = jsonData.filter(item => item.id !== id);
+
+    // jsonData.push({ "id": `${id}`});
+
+    // localStorage.setItem("recentView", JSON.stringify(jsonData));
+
+    // console.log("json file has been updated");
+
+    /* $.get("../data/recentView.json", function(data) {
+        console.log("data: ", data);
+    }) */
 }
