@@ -1,3 +1,4 @@
+const apiKey = "api_key=84bcbeb63edc1c2b591367fcc07c81c1";
 $(document).ready(function () {
     getAlbumId()
         .then(function (id) {
@@ -93,19 +94,24 @@ function displayFullSize(photos) {
 
 // store recent viewed photo
 function recentViewedPhoto(id) {
-    //localStorage.removeItem("recentView");
-    let jsonData = JSON.parse(localStorage.getItem("recentView")) || [];
-    console.log("f",jsonData);
+    let recentViewedList = localStorage.getItem("recentViewedPhotos");
+    let existingRecentViewedList = recentViewedList ? JSON.parse(recentViewedList) : [];
 
-    // jsonData = jsonData.filter(item => item.id !== id);
+    if (existingRecentViewedList.includes(id)) {
+        let newRecentViewedList = existingRecentViewedList.filter(function(item) {
+            return item !== id;
+        });
+        newRecentViewedList.push(id);
+        existingRecentViewedList = newRecentViewedList;
+    } else {
+        existingRecentViewedList.push(id);
+    }
 
-    // jsonData.push({ "id": `${id}`});
+    if (existingRecentViewedList.length > 5) {
+        existingRecentViewedList = existingRecentViewedList.slice(-5);
+    }
 
-    // localStorage.setItem("recentView", JSON.stringify(jsonData));
+    localStorage.setItem("recentViewedPhotos", JSON.stringify(existingRecentViewedList));
+    console.log("Recent viewed photos: ", existingRecentViewedList);
 
-    // console.log("json file has been updated");
-
-    /* $.get("../data/recentView.json", function(data) {
-        console.log("data: ", data);
-    }) */
 }
