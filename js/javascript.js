@@ -5,16 +5,13 @@ const requestAlbumUrl = "https://api.flickr.com/services/rest/?method=flickr.pho
 
 $(document).ready(function () {
     getHomePageAlbum();
-    //let recentViewed = localStorage.getItem("recentViewedPhotos");
-    //console.log("list: ", recentViewed);
     let viewedPhotosString = localStorage.getItem("recentViewedPhotos");
-    console.log("list: ", viewedPhotosString);
-    //localStorage.removeItem("recentViewedPhotos");
     if (viewedPhotosString != null) {
         displayRecentViewed(viewedPhotosString);
     }
 
     $("#modal-close").click(function () {
+        displayRecentViewed(viewedPhotosString);
         $("#modal-container").css("display", "none");
         $("#modal-content").attr("src", "");
     });
@@ -63,55 +60,75 @@ async function getHomePageAlbum() {
 
 function displayRecentViewed(viewedPhotosString) {
     let viewedPhotos = viewedPhotosString ? JSON.parse(viewedPhotosString) : [];
-    //viewedPhotos.reverse();
-    fetchPhoto(viewedPhotos, viewedPhotos.length);
-}
-
-function fetchPhoto(data, number) {
-    let photoData = data.map(photo => ({
-        id: photo
-    })).slice(0, number);
-    photoData.forEach(photo => {
-        getSize(photo);
+    fetchPhoto(viewedPhotos, viewedPhotos.length)
+    .then(photos => {
+        ("#recent").empty();
+        displayFullSize(photos);
+    })
+    .catch(error => {
+        console.log("Error displaying recent viewed photos");
     });
 }
 
-function getSize(photo) {
-    let getSizeStr = "https://api.flickr.com/services/rest/?method=flickr.photos.getSizes&format=json&nojsoncallback=1" + "&" + apiKey + "&photo_id=" + photo.id;
-
-    $.get(getSizeStr, function (data) {
-        let thumb = data.sizes.size[2].source;
-        console.log("size: ", thumb);
-        let photos = [{ file: thumb, id: photo.id }];
+async function fetchPhoto(data, number) {
+    let photoData = data.map(photo => ({
+        id: photo
+    })).slice(0, number);
+    try {
+        const photos = await Promise.all(photoData.map(photo => getSize(photo)));
         displayFullSize(photos);
+    } catch (error) {
+        console.log("Error fetching photos: ", error);
+    }
+}
+
+function getSize(photo) {
+    return new Promise((resolve, reject) => {
+        let getSizeStr = "https://api.flickr.com/services/rest/?method=flickr.photos.getSizes&format=json&nojsoncallback=1" + "&" + apiKey + "&photo_id=" + photo.id;
+        $.get(getSizeStr, function (data) {
+            let thumb = data.sizes.size[2].source;
+            let photos = [{ file: thumb, id: photo.id }];
+            resolve(photos);
+        }).fail(function () {
+            reject(new Error("Failed to fetch photos: " + photo.id));
+        });
     });
 }
 
 function displayFullSize(photos) {
-    let htmlStr = `<figure data-full="${photos[0].file}">
-    <img src="${photos[0].file}">
-</figure><br>`;
-    $("#recent").append(htmlStr);
+    photos.sort((a, b) => a.id - b.id);
+    photos.reverse();
+    photos.forEach(photo => {
+        console.log("photo: ", photo)
+        let htmlStr = `<figure data-full="${photo[0].file}">
+        <img src="${photo[0].file}">
+    </figure><br>`;
+        $("#recent").append(htmlStr);
 
-    $("figure").last().click(function () {
-        $("#modal-container").css("display", "block");
-        $("#modal-content").attr("src", $(this).attr("data-full"));
-        $("#modal-caption").text(photos[0].title);
-        recentViewedPhotos(photos[0].id);
+        $("figure").last().click(function () {
+            $("#modal-container").css("display", "block");
+            $("#modal-content").attr("src", $(this).attr("data-full"));
+            $("#modal-caption").text(photo[0].title);
+            recentViewedPhotos(photo[0].id);
+        });
     });
 }
 
 // store recent viewed photo
 function recentViewedPhotos(id) {
     let recentViewedList = localStorage.getItem("recentViewedPhotos");
+    console.log("recent viewed 1: ", recentViewedList);
+
     let existingRecentViewedList = recentViewedList ? JSON.parse(recentViewedList) : [];
+    console.log("recent viewed: ", existingRecentViewedList);
 
     if (existingRecentViewedList.includes(id)) {
-        let newRecentViewedList = existingRecentViewedList.filter(function(item) {
+        let newRecentViewedList = existingRecentViewedList.filter(function (item) {
             return item !== id;
         });
         newRecentViewedList.push(id);
         existingRecentViewedList = newRecentViewedList;
+        console.log("second recent viewed:, ", existingRecentViewedList);
     } else {
         existingRecentViewedList.push(id);
     }
