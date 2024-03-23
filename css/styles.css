@@ -132,7 +132,10 @@ html {
     word-wrap: break-word;
     overflow: hidden;
     overflow-y: hidden;
-    overflow: scroll;
+}
+
+.container h3:hover {
+    overflow-y: scroll;
 }
 
 .link-destination {
