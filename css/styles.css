@@ -1,20 +1,32 @@
-body,
+/* body,
 html {
     height: 100%;
     margin: 0;
     padding: 0;
     position: relative;
-}
+    display: flex;
+    flex: 1;
+} */
+
+
 
 .photo-box {
     font-size: 14px;
-    border: 1px solid black;
-    padding: 20px;
+    border: 2px solid black;
+    padding: 10px;
     margin: 5px;
     text-align: left;
-    width: 700px;
+    min-height: 300px;
+    max-height: 360px;
+    width: 274px;
     overflow: hidden;
     border-radius: 10px;
+}
+
+.photo-box img {
+    width: 100%;
+    height: 200px;
+    min-width: 165px;
 }
 
 .photo-box:hover {
@@ -37,7 +49,7 @@ html {
     top: 0;
     text-align: center;
     padding: 10px;
-    position:static;
+    position: static;
     flex-direction: column;
     display: flex;
     align-items: center;
@@ -45,12 +57,61 @@ html {
 }
 
 .container {
-    flex: 2;
+    flex: 1 0 33.33%;
     display: flex;
+    gap: 21px;
+    padding-left: 20px;
+    padding-right: 20px;
     justify-content: center;
     flex-wrap: wrap;
     position: relative;
     z-index: 1;
+}
+
+@media all and (min-width: 1024px) {
+    .container {
+        flex-basis: 33.33%
+    }
+
+    .photo-box {
+        width: 311px;
+    }
+
+    .content h3 {
+        height: 50px;
+        width: 254px;
+    }
+}
+
+@media all and (min-width: 768px) and (max-width: 1023px) {
+    .container {
+        flex-basis: 50%;
+    }
+
+    .photo-box {
+        width: 311px;
+    }
+
+    .content h3 {
+        height: 50px;
+        width: 254px;
+    }
+}
+
+@media all and (max-width: 767px) {
+    .container {
+        flex-basis: 100%;
+    }
+
+    .photo-box {
+        width: 350px;
+        max-height: 450px;
+    }
+
+    .content h3 {
+        max-height: 150px;
+        width: 330px;
+    }
 }
 
 .content {
@@ -58,29 +119,24 @@ html {
     display: block;
 }
 
-.content h1 {
+.content h2 {
     padding-left: 10px;
-    width: 290px;
-    height: 30px;
+    width: 190px;
+    height: auto;
     margin: 0;
 }
 
 .content h3 {
     padding: 10px;
     padding-top: 0;
-    width: 270px;
-    height: 126px;
     word-wrap: break-word;
     overflow: hidden;
     overflow-y: hidden;
-}
-
-.container h3:hover {
-    overflow-y: scroll;
+    overflow: scroll;
 }
 
 .link-destination {
-    display: flex;
+    display: block;
     gap: 10px;
     text-decoration: none;
 }
@@ -90,8 +146,10 @@ html {
     position: fixed;
     z-index: 1;
     padding-top: 100px;
-    left: 0; top: 0;
-    width: 100%; height: 80%;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 80%;
     overflow: auto;
     background-color: rgba(0, 0, 0, 0.9);
 }
