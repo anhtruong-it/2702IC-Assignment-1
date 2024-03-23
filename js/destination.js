@@ -75,13 +75,17 @@ function getSize(photo) {
     });
 }
 
-// display all photos of a destinaton
+// display all photos of a destination
 function displayFullSize(photos) {
+    let photoBox = $("<div>").addClass("photo-box");
+
     let htmlStr = `<figure data-full="${photos[0].file}">
     <img src="${photos[0].file}" alt="${photos[0].title}">
     <figcaption>${photos[0].title}</figcaption>
 </figure><br>`;
-    $("#container").append(htmlStr);
+
+    photoBox.append(htmlStr);
+    $("#container").append(photoBox);
 
     // display a photo modal
     $("figure").last().click(function () {
