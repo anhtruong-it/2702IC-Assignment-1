@@ -18,15 +18,19 @@ html {
     text-align: left;
     min-height: 300px;
     max-height: 360px;
-    width: 274px;
+    /* width: 274px; */
+    width: 100%;
     overflow: hidden;
     border-radius: 10px;
+    justify-items: center;
+    justify-content: center;
+    align-items: center;
 }
 
 .photo-box img {
     width: 100%;
     height: 200px;
-    min-width: 165px;
+    /* min-width: 165px; */
 }
 
 .photo-box:hover {
@@ -104,34 +108,37 @@ html {
     }
 
     .photo-box {
-        width: 350px;
+        min-width: 100px;
+        max-width: 500px;
         max-height: 450px;
     }
 
     .content h3 {
         max-height: 150px;
-        width: 330px;
+        max-width: 480px;
+        min-width: 100px;
     }
 }
 
 .content {
-    width: calc(100% - 410px);
+    justify-items: center;
+    max-width: 100%;
     display: block;
 }
 
 .content h2 {
-    padding-left: 10px;
-    width: 190px;
+    width: 100%;
     height: auto;
     margin: 0;
 }
 
 .content h3 {
-    padding: 10px;
     padding-top: 0;
     word-wrap: break-word;
     overflow: hidden;
     overflow-y: hidden;
+    width: 100%;
+
 }
 
 .container h3:hover {

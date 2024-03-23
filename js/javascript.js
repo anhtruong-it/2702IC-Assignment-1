@@ -48,7 +48,7 @@ async function getHomePageAlbum() {
                     $(location).attr("href", "pages/destinations.html");
                 });
 
-                let image = $("<img>").attr("src", photoUrl).attr("height", 200);
+                let image = $("<img>").attr("src", photoUrl);
                 let description = $("<div class='content'>");
                 let title = $("<h2>").text(album[i].title);
                 let caption = $("<h3>").text(data[i].caption);
