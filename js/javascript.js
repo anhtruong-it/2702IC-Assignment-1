@@ -5,17 +5,25 @@ const requestAlbumUrl = "https://api.flickr.com/services/rest/?method=flickr.pho
 
 $(document).ready(function () {
     getHomePageAlbum();
-    let viewedPhotosString = localStorage.getItem("recentViewedPhotos");
-    if (viewedPhotosString != null) {
-        displayRecentViewed(viewedPhotosString);
-    }
+    displayRecentViewed();
 
     $("#modal-close").click(function () {
-        displayRecentViewed(viewedPhotosString);
         $("#modal-container").css("display", "none");
         $("#modal-content").attr("src", "");
+
+        const recent = $("#recent");
+        recent.empty();
+
+        displayRecentViewed();
     });
 });
+
+async function displayRecentViewed() {
+    let viewedPhotosString = localStorage.getItem("recentViewedPhotos");
+    if (viewedPhotosString != null) {
+        await RecentViewed(viewedPhotosString);
+    }
+}
 
 // fetch and display homepage photos
 async function getHomePageAlbum() {
@@ -58,16 +66,9 @@ async function getHomePageAlbum() {
     }
 }
 
-function displayRecentViewed(viewedPhotosString) {
+async function RecentViewed(viewedPhotosString) {
     let viewedPhotos = viewedPhotosString ? JSON.parse(viewedPhotosString) : [];
-    fetchPhoto(viewedPhotos, viewedPhotos.length)
-    .then(photos => {
-        ("#recent").empty();
-        displayFullSize(photos);
-    })
-    .catch(error => {
-        console.log("Error displaying recent viewed photos");
-    });
+    await fetchPhoto(viewedPhotos, viewedPhotos.length);
 }
 
 async function fetchPhoto(data, number) {
@@ -76,7 +77,7 @@ async function fetchPhoto(data, number) {
     })).slice(0, number);
     try {
         const photos = await Promise.all(photoData.map(photo => getSize(photo)));
-        displayFullSize(photos);
+        await displayFullSize(photos);
     } catch (error) {
         console.log("Error fetching photos: ", error);
     }
@@ -95,20 +96,22 @@ function getSize(photo) {
     });
 }
 
-function displayFullSize(photos) {
+async function displayFullSize(photos) {
     photos.sort((a, b) => a.id - b.id);
     photos.reverse();
+
     photos.forEach(photo => {
-        console.log("photo: ", photo)
         let htmlStr = `<figure data-full="${photo[0].file}">
-        <img src="${photo[0].file}">
-    </figure><br>`;
+                        <img src="${photo[0].file}">
+                        </figure><br>`;
+
         $("#recent").append(htmlStr);
 
         $("figure").last().click(function () {
             $("#modal-container").css("display", "block");
             $("#modal-content").attr("src", $(this).attr("data-full"));
             $("#modal-caption").text(photo[0].title);
+
             recentViewedPhotos(photo[0].id);
         });
     });
@@ -126,6 +129,7 @@ function recentViewedPhotos(id) {
         let newRecentViewedList = existingRecentViewedList.filter(function (item) {
             return item !== id;
         });
+
         newRecentViewedList.push(id);
         existingRecentViewedList = newRecentViewedList;
         console.log("second recent viewed:, ", existingRecentViewedList);
@@ -138,6 +142,4 @@ function recentViewedPhotos(id) {
     }
 
     localStorage.setItem("recentViewedPhotos", JSON.stringify(existingRecentViewedList));
-    console.log("Recent viewed photos: ", existingRecentViewedList);
-
 }
