@@ -37,20 +37,20 @@ async function getHomePageAlbum() {
 
         $.get("data/homepagephotos.json", function (data) {
             for (let i = 0; i < album.length; i++) {
-                const photoUrl = `https://farm${album[i].farm}.staticflickr.com/${album[i].server}/${album[i].id}_${album[i].secret}.jpg`;
+                const photoUrl = data[i].url
 
                 let photoBox = $("<div>").addClass("photo-box");
 
                 let subLink = $("<a class='link-destination'>").attr("href", "pages/destinations.html");
                 subLink.click(function (event) {
                     event.preventDefault();
-                    $.cookie("title", encodeURIComponent(album[i].title));
+                    $.cookie("title", encodeURIComponent(data[i].title));
                     $(location).attr("href", "pages/destinations.html");
                 });
 
                 let image = $("<img>").attr("src", photoUrl);
                 let description = $("<div class='content'>");
-                let title = $("<h2>").text(album[i].title);
+                let title = $("<h2>").text(data[i].title);
                 let caption = $("<h3>").text(data[i].caption);
 
                 description.append(title);
