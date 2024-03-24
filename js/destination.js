@@ -76,7 +76,8 @@ function getSize(photo) {
         let thumb = sizeData[0].sizes.size[5].source;
         let dateString = photoData[0].photo.dates.taken;
         let date = new Date(dateString);
-        let formattedDate = date.toISOString().split("T")[0];
+        let setDate = { year: "numeric", month: "short", day: "numeric" };
+        let formattedDate = date.toLocaleDateString("en-GB", setDate);
         let photos = [{ file: thumb, title: photo.title, id: photo.id , date: formattedDate}];
         displayFullSize(photos)
     });
