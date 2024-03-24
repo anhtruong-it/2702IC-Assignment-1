@@ -49,7 +49,7 @@ async function displayThumbnails(albumId) {
         const response = await fetch(requestAlbumUrl);
         const data = await response.json();
         const album = data.photoset.photo;
-        fetchPhoto(album, 5);
+        fetchPhoto(album, album.length);
 
     } catch (error) {
         console.error("error thumbnails: ", error);

@@ -1,3 +1,63 @@
+.header {
+    height: 80px;
+    width: 100%;
+    top: 0;
+    padding: 10px;
+    position: static;
+    flex-direction: row;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.header h1 {
+    text-align: center;
+    flex: 1;
+    margin: 0;
+    position: relative;
+    z-index: 0;
+}
+
+.menu {
+    display: inline-block;
+    cursor: pointer;
+    margin-left: 10px;
+}
+
+.sidenav {
+    height: 100%;
+    width: 0;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    background-color: #111;
+    overflow-x: hidden;
+    transition: 0.5s;
+    padding-top: 60px;
+}
+
+.sidenav a {
+    padding: 8px 8px 8px 32px;
+    text-decoration: none;
+    font-size: 25px;
+    color: #818181;
+    display: block;
+    transition: 0.3s;
+}
+
+.sidenav a:hover {
+    color: #f1f1f1;
+}
+
+.sidenav .closebtn {
+    position: absolute;
+    top: 0;
+    right: 25px;
+    font-size: 36px;
+    margin-left: 50px;
+}
+
 .photo-box {
     font-size: 14px;
     border: 2px solid black;
@@ -31,19 +91,6 @@
 
 .photo-box:hover .content h3 {
     letter-spacing: 0;
-}
-
-.header {
-    height: 80px;
-    width: 100%;
-    top: 0;
-    text-align: center;
-    padding: 10px;
-    position: static;
-    flex-direction: column;
-    display: flex;
-    align-items: center;
-    place-items: inherit;
 }
 
 .container {
@@ -104,6 +151,10 @@
         max-height: 150px;
         max-width: 480px;
         min-width: 100px;
+    }
+
+    .header {
+        display: block;
     }
 }
 

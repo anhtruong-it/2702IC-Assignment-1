@@ -88,7 +88,7 @@ function getSize(photo) {
         let getSizeStr = "https://api.flickr.com/services/rest/?method=flickr.photos.getSizes&format=json&nojsoncallback=1" + "&" + apiKey + "&photo_id=" + photo.id;
         $.get(getSizeStr, function (data) {
             let thumb = data.sizes.size[1].source;
-            let fullSize = data.sizes.size[data.sizes.size.length-1].source;
+            let fullSize = data.sizes.size[data.sizes.size.length - 1].source;
             let photos = [{ file: thumb, full: fullSize, id: photo.id }];
             resolve(photos);
         }).fail(function () {
@@ -143,4 +143,14 @@ function recentViewedPhotos(id) {
     }
 
     localStorage.setItem("recentViewedPhotos", JSON.stringify(existingRecentViewedList));
+}
+
+function openNav() {
+    document.getElementById("mySidenav").style.width = "250px";
+    document.getElementById("main").style.marginLeft = "250px";
+}
+
+function closeNav() {
+    document.getElementById("mySidenav").style.width = "0";
+    document.getElementById("main").style.marginLeft = "0";
 }
