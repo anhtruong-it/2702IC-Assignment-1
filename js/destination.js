@@ -73,12 +73,13 @@ function getSize(photo) {
         $.get(getPhotoStr),
         $.get(getSizeStr)
     ).done(function(photoData, sizeData) {
-        let thumb = sizeData[0].sizes.size[5].source;
+        let thumb = sizeData[0].sizes.size[3].source;
+        let fullSize = sizeData[0].sizes.size[sizeData[0].sizes.size.length-1].source;
         let dateString = photoData[0].photo.dates.taken;
         let date = new Date(dateString);
         let setDate = { year: "numeric", month: "short", day: "numeric" };
         let formattedDate = date.toLocaleDateString("en-GB", setDate);
-        let photos = [{ file: thumb, title: photo.title, id: photo.id , date: formattedDate}];
+        let photos = [{ file: thumb, full: fullSize, title: photo.title, id: photo.id , date: formattedDate}];
         displayFullSize(photos)
     });
 }
@@ -87,7 +88,7 @@ function getSize(photo) {
 function displayFullSize(photos) {
     let photoBox = $("<div>").addClass("photo-box");
 
-    let htmlStr = `<figure data-full="${photos[0].file}">
+    let htmlStr = `<figure data-full="${photos[0].full}">
     <img src="${photos[0].file}" alt="${photos[0].title}">
     <figcaption>${photos[0].title} - ${photos[0].date}</figcaption>
 </figure><br>`;

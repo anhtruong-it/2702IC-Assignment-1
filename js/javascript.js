@@ -87,8 +87,9 @@ function getSize(photo) {
     return new Promise((resolve, reject) => {
         let getSizeStr = "https://api.flickr.com/services/rest/?method=flickr.photos.getSizes&format=json&nojsoncallback=1" + "&" + apiKey + "&photo_id=" + photo.id;
         $.get(getSizeStr, function (data) {
-            let thumb = data.sizes.size[4].source;
-            let photos = [{ file: thumb, id: photo.id }];
+            let thumb = data.sizes.size[1].source;
+            let fullSize = data.sizes.size[data.sizes.size.length-1].source;
+            let photos = [{ file: thumb, full: fullSize, id: photo.id }];
             resolve(photos);
         }).fail(function () {
             reject(new Error("Failed to fetch photos: " + photo.id));
@@ -101,7 +102,7 @@ async function displayFullSize(photos) {
     photos.reverse();
 
     photos.forEach(photo => {
-        let htmlStr = `<figure data-full="${photo[0].file}">
+        let htmlStr = `<figure data-full="${photo[0].full}">
                         <img src="${photo[0].file}" width="100px" height="100px" style="border-radius: 50px;">
                         </figure><br>`;
 
