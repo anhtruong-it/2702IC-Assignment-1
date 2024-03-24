@@ -66,11 +66,18 @@ function fetchPhoto(data, number) {
 
 // get a size for a photo
 function getSize(photo) {
+    let getPhotoStr = "https://api.flickr.com/services/rest/?method=flickr.photos.getInfo&format=json&nojsoncallback=1" + "&" + apiKey + "&photo_id=" + photo.id;
     let getSizeStr = "https://api.flickr.com/services/rest/?method=flickr.photos.getSizes&format=json&nojsoncallback=1" + "&" + apiKey + "&photo_id=" + photo.id;
 
-    $.get(getSizeStr, function (data) {
-        let thumb = data.sizes.size[5].source;
-        let photos = [{ file: thumb, title: photo.title, id: photo.id }];
+    $.when(
+        $.get(getPhotoStr),
+        $.get(getSizeStr)
+    ).done(function(photoData, sizeData) {
+        let thumb = sizeData[0].sizes.size[5].source;
+        let dateString = photoData[0].photo.dates.taken;
+        let date = new Date(dateString);
+        let formattedDate = date.toISOString().split("T")[0];
+        let photos = [{ file: thumb, title: photo.title, id: photo.id , date: formattedDate}];
         displayFullSize(photos)
     });
 }
@@ -81,7 +88,7 @@ function displayFullSize(photos) {
 
     let htmlStr = `<figure data-full="${photos[0].file}">
     <img src="${photos[0].file}" alt="${photos[0].title}">
-    <figcaption>${photos[0].title}</figcaption>
+    <figcaption>${photos[0].title} - ${photos[0].date}</figcaption>
 </figure><br>`;
 
     photoBox.append(htmlStr);
