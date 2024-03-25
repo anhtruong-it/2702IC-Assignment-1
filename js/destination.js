@@ -6,7 +6,9 @@ $(document).ready(function () {
         })
         .catch(function (error) {
             console.error("error: ", error);
-        })
+        });
+
+        photoPreview();
 
 });
 
@@ -127,4 +129,28 @@ function recentViewedPhoto(id) {
     localStorage.setItem("recentViewedPhotos", JSON.stringify(existingRecentViewedList));
     console.log("Recent viewed photos: ", existingRecentViewedList);
 
+}
+
+function photoPreview() {
+    $("#photoInputs").on("change", function(event) {
+        let files = event.target.files;
+        let preview = $("#photosPreview");
+        preview.empty();
+
+        for (let i = 0; i < files.length; i ++) {
+            let file =  files[i];
+            let reader = new FileReader();
+
+            reader.onload = function(e) {
+                let photo = $("<img>");
+                photo.attr("src", e.target.result);
+                photo.css({ width: "100px", height: "100px" });
+                preview.append(photo);
+                console.log("photo: ", photo);
+            }
+            
+
+            reader.readAsDataURL(file);
+        }
+    });
 }

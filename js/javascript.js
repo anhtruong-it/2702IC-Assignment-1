@@ -146,11 +146,11 @@ function recentViewedPhotos(id) {
 }
 
 function openNav() {
-    document.getElementById("mySidenav").style.width = "250px";
-    document.getElementById("main").style.marginLeft = "250px";
+    $("#mySidenav").css("width", "250px");
+    $("#main").css("marginLeft", "250px");
 }
 
 function closeNav() {
-    document.getElementById("mySidenav").style.width = "0";
-    document.getElementById("main").style.marginLeft = "0";
+    $("#mySidenav").css("width", "0");
+    $("#main").css("marginLeft", "0");
 }

@@ -15,6 +15,13 @@
   <body>
     <h1 id="title">Title</h1>
     <a href="../index.html"><button>Home</button></a>
+
+    <h2>Add more photos</h2>
+    <input type="file" id="photoInputs" accept="image/*" multiple>
+    <button onclick="uploadPhotos()">Upload</button>
+
+    <div class="photosPreview" id="photosPreview"></div>
+
     <div class="container" id="container"></div>
     <div id="modal-container">
       <span id="modal-close">&times;</span>

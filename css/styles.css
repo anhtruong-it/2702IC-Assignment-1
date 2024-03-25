@@ -31,7 +31,7 @@
     z-index: 1;
     top: 0;
     left: 0;
-    background-color: #111;
+    background-color: white;
     overflow-x: hidden;
     transition: 0.5s;
     padding-top: 60px;
@@ -47,7 +47,7 @@
 }
 
 .sidenav a:hover {
-    color: #f1f1f1;
+    color: black;
 }
 
 .sidenav .closebtn {
@@ -232,4 +232,12 @@
     flex-wrap: wrap;
     position: relative;
     z-index: 1;
+}
+
+.photosPreview {
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+    align-items: center;
+
 }
