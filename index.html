@@ -10,11 +10,12 @@
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
     <script src="js/javascript.js"></script>
+    <script src="https://www.gstatic.com/dialogflow-console/fast/messenger/bootstrap.js?v=1"></script>
   </head>
 
   <body>
     <div class="header">
-    <span class="menu" onclick="openNav()">&#9776;</span>
+      <span class="menu" onclick="openNav()">&#9776;</span>
       <h1>Welcome to Queensland Tourisms</h1>
       <div id="mySidenav" class="sidenav">
         <a href="javascript:void(0)" class="closebtn" onclick="closeNav()"
@@ -31,4 +32,11 @@
       <div id="modal-caption"></div>
     </div>
   </body>
+
+  <df-messenger
+    intent="WELCOME"
+    chat-title="NewAgent"
+    agent-id="f407d26f-c72a-4b1d-a426-0b94b56d2bf6"
+    language-code="en"
+  ></df-messenger>
 </html>

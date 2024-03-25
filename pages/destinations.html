@@ -9,6 +9,7 @@
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
     <script src="../js/destination.js"></script>
+    <script src="https://www.gstatic.com/dialogflow-console/fast/messenger/bootstrap.js?v=1"></script>
     <link rel="stylesheet" href="../css/styles.css" />
   </head>
 
@@ -17,7 +18,7 @@
     <a href="../index.html"><button>Home</button></a>
 
     <h2>Add more photos</h2>
-    <input type="file" id="photoInputs" accept="image/*" multiple>
+    <input type="file" id="photoInputs" accept="image/*" multiple />
     <button onclick="uploadPhotos()">Upload</button>
 
     <div class="photosPreview" id="photosPreview"></div>
@@ -28,5 +29,12 @@
       <img id="modal-content" />
       <div id="modal-caption"></div>
     </div>
+
+    <df-messenger
+      intent="WELCOME"
+      chat-title="NewAgent"
+      agent-id="f407d26f-c72a-4b1d-a426-0b94b56d2bf6"
+      language-code="en"
+    ></df-messenger>
   </body>
 </html>
