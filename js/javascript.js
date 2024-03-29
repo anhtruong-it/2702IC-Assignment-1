@@ -1,7 +1,5 @@
 // initial flickr information
-const apiKey = "api_key=84bcbeb63edc1c2b591367fcc07c81c1";
-const albumId = "photoset_id=72177720315529360";
-const requestAlbumUrl = "https://api.flickr.com/services/rest/?method=flickr.photosets.getPhotos&format=json&nojsoncallback=1" + "&" + apiKey + "&" + albumId;
+const apiKey = "84bcbeb63edc1c2b591367fcc07c81c1";
 
 $(document).ready(function () {
     getHomePageAlbum();
@@ -31,36 +29,36 @@ async function getHomePageAlbum() {
     linkList.empty();
 
     try {
-        const response = await fetch(requestAlbumUrl);
-        const data = await response.json();
-        const album = data.photoset.photo;
+        const destinationData = await $.get("data/destination.json");
+        for (let i = 0; i < destinationData.length; i++) {
+            const destinationSearch = destinationData[i].destination + " " + "View In Australia";
+            const encodedDestination = encodeURIComponent(destinationSearch);
+            const getDestination = `https://api.flickr.com/services/rest/?method=flickr.photos.search&per_page=1&text=${encodedDestination}&format=json&nojsoncallback=1&api_key=${apiKey}&sort=relevance`;
+            const response = await fetch(getDestination);
+            const data = await response.json();
+            let photoBox = $("<div>").addClass("photo-box");
 
-        $.get("data/homepagephotos.json", function (data) {
-            for (let i = 0; i < album.length; i++) {
-                const photoUrl = data[i].url
+            let subLink = $("<a class='link-destination'>").attr("href", "pages/destinations.html");
+            subLink.click(function (event) {
+                event.preventDefault();
+                $.cookie("title", encodeURIComponent(destinationData[i].destination));
+                $.cookie("destination", encodedDestination);
+                $(location).attr("href", "pages/destinations.html");
+            });
+            const dataReturn = data.photos.photo[0];
+            const imgUrl = `https://farm${dataReturn.farm}.staticflickr.com/${dataReturn.server}/${dataReturn.id}_${dataReturn.secret}.jpg`;
+            let image = $("<img>").attr("src", imgUrl);
+            let description = $("<div class='content'>");
+            let title = $("<h2>").text(destinationData[i].destination);
+            let caption = $("<h3>").text(destinationData[i].destination);
 
-                let photoBox = $("<div>").addClass("photo-box");
-
-                let subLink = $("<a class='link-destination'>").attr("href", "pages/destinations.html");
-                subLink.click(function (event) {
-                    event.preventDefault();
-                    $.cookie("title", encodeURIComponent(data[i].title));
-                    $(location).attr("href", "pages/destinations.html");
-                });
-
-                let image = $("<img>").attr("src", photoUrl);
-                let description = $("<div class='content'>");
-                let title = $("<h2>").text(data[i].title);
-                let caption = $("<h3>").text(data[i].caption);
-
-                description.append(title);
-                description.append(caption);
-                subLink.append(image);
-                subLink.append(description);
-                photoBox.append(subLink);
-                linkList.append(photoBox);
-            }
-        });
+            description.append(title);
+            description.append(caption);
+            subLink.append(image);
+            subLink.append(description);
+            photoBox.append(subLink);
+            linkList.append(photoBox);
+        }
     } catch (error) {
         console.error("error fetching album: ", error);
     }
@@ -85,14 +83,17 @@ async function fetchPhoto(data, number) {
 
 function getSize(photo) {
     return new Promise((resolve, reject) => {
-        let getSizeStr = "https://api.flickr.com/services/rest/?method=flickr.photos.getSizes&format=json&nojsoncallback=1" + "&" + apiKey + "&photo_id=" + photo.id;
-        $.get(getSizeStr, function (data) {
-            let thumb = data.sizes.size[1].source;
-            let fullSize = data.sizes.size[data.sizes.size.length - 1].source;
-            let photos = [{ file: thumb, full: fullSize, id: photo.id }];
+        let getPhotoStr = `https://api.flickr.com/services/rest/?method=flickr.photos.getInfo&format=json&nojsoncallback=1&api_key=${apiKey}&photo_id=${photo.id}`;
+        let getSizeStr = `https://api.flickr.com/services/rest/?method=flickr.photos.getSizes&format=json&nojsoncallback=1&api_key=${apiKey}&photo_id=${photo.id}`;
+        $.when(
+            $.get(getPhotoStr),
+            $.get(getSizeStr)
+        ).done(function(photoData, sizeData) {
+            let thumb = sizeData[0].sizes.size[1].source;
+            let fullSize = sizeData[0].sizes.size[sizeData[0].sizes.size.length - 1].source;
+            let photos = [{ file: thumb, full: fullSize, id: photo.id, title: photoData[0].photo.title._content}];
+            console.log("photos: ", photos);
             resolve(photos);
-        }).fail(function () {
-            reject(new Error("Failed to fetch photos: " + photo.id));
         });
     });
 }

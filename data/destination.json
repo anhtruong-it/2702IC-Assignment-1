@@ -1,9 +1,9 @@
 [
-    {"destination": "Moreton Bay", "albumId": "72177720315565778"},
-    {"destination": "Great Barrier Reef", "albumId": "72177720315565768"},
-    {"destination": "Noosa", "albumId": "72177720315565748"},
-    {"destination": "Whitsunday Island", "albumId": "72177720315574629"},
-    {"destination": "Fraser Island", "albumId": "72177720315574449"},
-    {"destination": "Gold Coast", "albumId": "72177720315560126"},
-    {"destination": "Cairn", "albumId": "72177720315554725"}
+    {"destination": "Moreton Bay"},
+    {"destination": "Great Barrier Reef"},
+    {"destination": "Noosa"},
+    {"destination": "Whitsunday Island"},
+    {"destination": "Fraser Island"},
+    {"destination": "Cairn"},
+    {"destination": "Gold Coast"}
 ]
