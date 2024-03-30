@@ -102,7 +102,6 @@
     justify-content: center;
     flex-wrap: wrap;
     position: relative;
-    z-index: 1;
 }
 
 @media all and (min-width: 1024px) {

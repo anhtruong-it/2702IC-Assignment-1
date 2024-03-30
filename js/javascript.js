@@ -5,6 +5,7 @@ const apiKey = "84bcbeb63edc1c2b591367fcc07c81c1";
 const pixabayApi = "43144252-c0d9ad58dba53c4092267a584";
 
 $(document).ready(function () {
+    //.removeItem("recentViewedPhotos");
     getHomePageAlbum();
     displayRecentViewed();
 
@@ -52,7 +53,6 @@ async function getHomePageAlbum() {
                 $(location).attr("href", "pages/destinations.html");
             });
             const image = $("<img>").attr("src", imgUrl);
-            console.log("url: ", image);
             const description = $("<div class='content'>");
             const title = $("<h2>").text(destinationData[i].destination);
             const caption = $("<h3>").text(destinationData[i].caption);
@@ -70,7 +70,7 @@ async function getHomePageAlbum() {
 }
 
 async function RecentViewed(viewedPhotosString) {
-    let viewedPhotos = viewedPhotosString ? JSON.parse(viewedPhotosString) : [];
+    const viewedPhotos = viewedPhotosString ? JSON.parse(viewedPhotosString) : [];
     await fetchPhoto(viewedPhotos, viewedPhotos.length);
 }
 
@@ -97,7 +97,6 @@ function getSize(photo) {
             let thumb = sizeData[0].sizes.size[1].source;
             let fullSize = sizeData[0].sizes.size[sizeData[0].sizes.size.length - 1].source;
             let photos = [{ file: thumb, full: fullSize, id: photo.id, title: photoData[0].photo.title._content}];
-            console.log("photos: ", photos);
             resolve(photos);
         });
     });
@@ -127,10 +126,8 @@ async function displayFullSize(photos) {
 // store recent viewed photo
 function recentViewedPhotos(id) {
     let recentViewedList = localStorage.getItem("recentViewedPhotos");
-    console.log("recent viewed 1: ", recentViewedList);
 
     let existingRecentViewedList = recentViewedList ? JSON.parse(recentViewedList) : [];
-    console.log("recent viewed: ", existingRecentViewedList);
 
     if (existingRecentViewedList.includes(id)) {
         let newRecentViewedList = existingRecentViewedList.filter(function (item) {
@@ -139,7 +136,6 @@ function recentViewedPhotos(id) {
 
         newRecentViewedList.push(id);
         existingRecentViewedList = newRecentViewedList;
-        console.log("second recent viewed:, ", existingRecentViewedList);
     } else {
         existingRecentViewedList.push(id);
     }

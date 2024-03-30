@@ -1,9 +1,9 @@
 const apiKey = "84bcbeb63edc1c2b591367fcc07c81c1";
-$(document).ready(function () {
+$(document).ready(async function () {
 
-    displayThumbnails();
+    await displayThumbnails();
 
-    displayRecentViewed();
+    await displayRecentViewed();
 
     // close button of modal
     $("#modal-close").click(function () {
@@ -32,7 +32,6 @@ $(document).ready(function () {
 
 // display 5 thumbnails of each destination
 async function displayThumbnails() {
-    //const requestAlbumUrl = "https://api.flickr.com/services/rest/?method=flickr.photosets.getPhotos&format=json&nojsoncallback=1" + "&" + apiKey + "&" + albumId;
     const destination = $.cookie("destination");
     const title = decodeURIComponent($.cookie("title"));
     $("#title").html(title);
@@ -45,7 +44,6 @@ async function displayThumbnails() {
     try {
         const response = await fetch(requestPhotos);
         const data = await response.json();
-        console.log("destination: ", data);
         fetchPhoto(data.photos.photo, data.photos.photo.length, "thumbnails");
 
     } catch (error) {
@@ -58,7 +56,6 @@ async function fetchPhoto(data, number, state) {
 
     let photoData;
     if (state === "thumbnails") {
-        console.log("fetch thumbnails:", data);
         photoData = data.map(photo => ({
             id: photo.id,
             title: photo.title,
@@ -66,97 +63,98 @@ async function fetchPhoto(data, number, state) {
             secret: photo.secret,
             server: photo.server
         })).slice(0, number);
-        const photos = await Promise.all(photoData.map(photo => getSize(photo, state)));
-        console.log("fetch thumbs:", photos);
-        await displayFullSize(photos, state);
-
-    } else {
-        console.log("fetch recent:", data);
+        photoData.forEach(photo => {
+            getSize(photo, state);
+        });
+    } else if (state === "recent") {
         photoData = data.map(photo => ({
             id: photo
         })).slice(0, number);
         try {
             const photos = await Promise.all(photoData.map(photo => getSize(photo, state)));
-            console.log("fetch recent:", photos);
-            await displayFullSize(photos, state);
+            displayFullSize(photos, state);
         } catch (error) {
             console.log("Error fetching photos", error);
         }
     }
-
-
 }
 
 // get a size for a photo
 function getSize(photo, state) {
-    return new Promise((resolve, reject) => {
-        let getPhotoStr = `https://api.flickr.com/services/rest/?method=flickr.photos.getInfo&format=json&nojsoncallback=1&api_key=${apiKey}&photo_id=${photo.id}`;
-        let getSizeStr = `https://api.flickr.com/services/rest/?method=flickr.photos.getSizes&format=json&nojsoncallback=1&api_key=${apiKey}&photo_id=${photo.id}`;
+
+    if (state === "thumbnails") {
+        const getPhotoStr = `https://api.flickr.com/services/rest/?method=flickr.photos.getInfo&format=json&nojsoncallback=1&api_key=${apiKey}&photo_id=${photo.id}`;
+        const getSizeStr = `https://api.flickr.com/services/rest/?method=flickr.photos.getSizes&format=json&nojsoncallback=1&api_key=${apiKey}&photo_id=${photo.id}`;
 
         $.when(
             $.get(getPhotoStr),
             $.get(getSizeStr)
         ).done(function (photoData, sizeData) {
-            let thumb = sizeData[0].sizes.size[3].source;
-            let recentSize = sizeData[0].sizes.size[1].source;
-            let fullSize = sizeData[0].sizes.size[sizeData[0].sizes.size.length - 1].source;
-
-            let dateString = photoData[0].photo.dates.taken;
-            let date = new Date(dateString);
-            let setDate = { year: "numeric", month: "short", day: "numeric" };
-            let formattedDate = date.toLocaleDateString("en-GB", setDate);
-            let photos = [{ file: thumb, full: fullSize, recentSize: recentSize, title: photo.title, id: photo.id, date: formattedDate }];
-            resolve(photos);
+            const thumb = sizeData[0].sizes.size[3].source;
+            const fullSize = sizeData[0].sizes.size[sizeData[0].sizes.size.length - 1].source;
+            const dateString = photoData[0].photo.dates.taken;
+            const date = new Date(dateString);
+            const setDate = { year: "numeric", month: "short", day: "numeric" };
+            const formattedDate = date.toLocaleDateString("en-GB", setDate);
+            const photos = [{ file: thumb, full: fullSize, title: photo.title, id: photo.id, date: formattedDate }];
+            displayFullSize(photos, state);
         });
-    });
+    } else if (state === "recent") {
+        return new Promise((resolve, reject) => {
+            const getPhotoStr = `https://api.flickr.com/services/rest/?method=flickr.photos.getInfo&format=json&nojsoncallback=1&api_key=${apiKey}&photo_id=${photo.id}`;
+            const getSizeStr = `https://api.flickr.com/services/rest/?method=flickr.photos.getSizes&format=json&nojsoncallback=1&api_key=${apiKey}&photo_id=${photo.id}`;
+
+            $.when(
+                $.get(getPhotoStr),
+                $.get(getSizeStr)
+            ).done(function (photoData, sizeData) {
+                const thumb = sizeData[0].sizes.size[1].source;
+                const fullSize = sizeData[0].sizes.size[sizeData[0].sizes.size.length - 1].source;
+                const photos = [{ recentSize: thumb, full: fullSize, id: photo.id, title: photoData[0].photo.title._content }];
+                resolve(photos);
+            });
+        });
+    }
+
 }
 
 // display all photos of a destination
-function displayFullSize(photos, state) {
-    console.log("sate display: ", state);
+function displayFullSize(photo, state) {
     if (state === "thumbnails") {
-        console.log("display thumbnails");
-        console.log("photos ", photos[0]);
-        photos.forEach(photo => {
-            let photoBox = $("<div>").addClass("photo-box");
+        const photoBox = $("<div>").addClass("photo-box");
 
-            let htmlStr = `<figure data-full="${photo[0].full}">
+        const htmlStr = `<figure data-full="${photo[0].full}">
             <img src="${photo[0].file}" alt="${photo[0].title}">
             <figcaption>${photo[0].title} - ${photo[0].date}</figcaption>
         </figure><br>`;
 
-            photoBox.append(htmlStr);
-            $("#container").append(photoBox);
+        photoBox.append(htmlStr);
+        $("#container").append(photoBox);
 
-            // display a photo modal
-            $("#container").on("click", "figure", function () {
-                $("#modal-container").css("display", "block");
-                $("#modal-content").attr("src", $(this).attr("data-full"));
-                $("#modal-caption").text(photo[0].title);
-                console.log("photos: ", photo);
-                recentViewedPhoto(photo[0].id);
-            });
-        })
-
-    } else {
-        console.log("display recent");
-        photos.sort((a, b) => a.id - b.id);
-        photos.reverse();
-        console.log("recent size: ", photos)
-        photos.forEach(photo => {
-            let htmlStr = `<figure data-full="${photo[0].full}">
-                        <img src="${photo[0].recentSize}" width="100px" height="100px" style="border-radius: 50px;">
-                        </figure><br>`;
+        // display a photo modal
+        $("figure", photoBox).click(function () {
+            $("#modal-container").css("display", "block");
+            $("#modal-content").attr("src", $(this).attr("data-full"));
+            $("#modal-caption").text(photo[0].title);
+            recentViewedPhoto(photo[0].id);
+        });
+    } else if (state === "recent") {
+        photo.sort((a, b) => a.id - b.id);
+        photo.reverse();
+        photo.forEach((photos, index) => {
+            let htmlStr = `<div class="recent-photos" data-full="${photos[0].full}" data-index="${index}">
+                        <img src="${photos[0].recentSize}" width="100px" height="100px" style="border-radius: 50px;">
+                        </div><br>`;
 
             $("#recent").append(htmlStr);
-
-            $("#recent").on("click", "figure", function () {
-                $("#recent-container").css("display", "block");
-                $("#recent-content").attr("src", $(this).attr("data-full"));
-                $("#recent-caption").text(photo[0].title);
-
-                recentViewedPhoto(photo[0].id);
-            });
+        });
+        $(".recent-photos").click(function () {
+            const photosIndex = $(this).attr("data-index");
+            const clickedPhoto = photo[photosIndex];
+            $("#recent-container").css("display", "block");
+            $("#recent-content").attr("src", $(this).attr("data-full"));
+            $("#recent-caption").text(clickedPhoto[0].title);
+            recentViewedPhoto(clickedPhoto[0].id);
         });
     }
 
@@ -183,8 +181,6 @@ function recentViewedPhoto(id) {
     }
 
     localStorage.setItem("recentViewedPhotos", JSON.stringify(existingRecentViewedList));
-    console.log("Recent viewed photos: ", existingRecentViewedList);
-
 }
 
 function photoPreview() {
@@ -213,7 +209,6 @@ function photoPreview() {
 
 async function displayRecentViewed() {
     let viewedPhotosString = localStorage.getItem("recentViewedPhotos");
-    console.log("recent: ", viewedPhotosString);
     if (viewedPhotosString != null) {
         await RecentViewed(viewedPhotosString);
     }
