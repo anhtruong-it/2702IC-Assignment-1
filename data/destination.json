@@ -1,9 +1,30 @@
 [
-    {"destination": "Moreton Bay"},
-    {"destination": "Great Barrier Reef"},
-    {"destination": "Noosa"},
-    {"destination": "Whitsunday Island"},
-    {"destination": "Fraser Island"},
-    {"destination": "Cairn"},
-    {"destination": "Gold Coast"}
+    {
+        "destination": "Moreton Bay",
+        "caption": "Moreton Bay, shallow inlet of the Pacific Ocean, indenting southeastern Queensland, Australia. Sheltered on the north by Bribie Island and on the east and south by Moreton and North and South Stradbroke islands, the bay measures 65 by 20 miles (105 by 32 km)."
+    },
+    {
+        "destination": "Great Barrier Reef",
+        "caption": ""
+    },
+    {
+        "destination": "Noosa",
+        "caption": "Situated at the northern tip of Queensland's Sunshine Coast, Noosa Shire covers an area of 871km2 and is home to more than 54,000 people. The Traditional Owners and original custodians of the land were the Kabi Kabi / Gubbi Gubbi people."
+    },
+    {
+        "destination": "Whitsunday Island",
+        "caption": ""
+    },
+    {
+        "destination": "Fraser Island",
+        "caption": "K'gari (Fraser Island) lies just off the east coast of Australia. At 122 km long, it is the largest sand island in the world. Majestic remnants of tall rainforest growing on sand and half the world's perched freshwater dune lakes are found inland from the beach."
+    },
+    {
+        "destination": "Cairn",
+        "caption": ""
+    },
+    {
+        "destination": "Gold Coast",
+        "caption": "The Gold Coast is Australia's sixth largest city. It is home to over 635,000 people. We are a city known for our lifestyle and diversity, with almost one in three residents born overseas. The city boasts close to one million visitors each year from countries all over the world. The Gold Coast is one of Australia’s premier holiday destinations. Famous for its surf breaks, stunning beaches, theme parks, shopping, nightlife and hinterland, it has been attracting Australian families for many decades. The Gold Coast is in south-east Queensland, just one hour south of Brisbane, and stretches from Oxenford in the north to Coolangatta in the south, South Stradbroke Island in the east and incorporates Surfers Paradise on the coast.  The region has 70 kilometres of uninterrupted coastline and is fringed by rainforest hinterland, including world heritage-listed national parks.  The region is famous for its attractive environment, climate and lifestyle and has a highly specialised economy that is dominated by the tourism industry."
+    }
 ]

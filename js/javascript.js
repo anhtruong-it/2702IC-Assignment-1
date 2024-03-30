@@ -1,6 +1,9 @@
 // initial flickr information
 const apiKey = "84bcbeb63edc1c2b591367fcc07c81c1";
 
+// initial pexels API
+const pixabayApi = "43144252-c0d9ad58dba53c4092267a584";
+
 $(document).ready(function () {
     getHomePageAlbum();
     displayRecentViewed();
@@ -31,26 +34,28 @@ async function getHomePageAlbum() {
     try {
         const destinationData = await $.get("data/destination.json");
         for (let i = 0; i < destinationData.length; i++) {
-            const destinationSearch = destinationData[i].destination + " " + "View In Australia";
+            const destinationSearch = destinationData[i].destination;
             const encodedDestination = encodeURIComponent(destinationSearch);
-            const getDestination = `https://api.flickr.com/services/rest/?method=flickr.photos.search&per_page=1&text=${encodedDestination}&format=json&nojsoncallback=1&api_key=${apiKey}&sort=relevance`;
-            const response = await fetch(getDestination);
+            const response = await fetch(`https://pixabay.com/api/?key=${pixabayApi}&q=${encodedDestination}&order=popular&lang=en`);
+            if (!response.ok) {
+                throw new Error("Failed to fetch photos");
+            }
             const data = await response.json();
-            let photoBox = $("<div>").addClass("photo-box");
+            const imgUrl = data.hits[0].webformatURL;
+            const photoBox = $("<div>").addClass("photo-box");
 
-            let subLink = $("<a class='link-destination'>").attr("href", "pages/destinations.html");
+            const subLink = $("<a class='link-destination'>").attr("href", "pages/destinations.html");
             subLink.click(function (event) {
                 event.preventDefault();
                 $.cookie("title", encodeURIComponent(destinationData[i].destination));
                 $.cookie("destination", encodedDestination);
                 $(location).attr("href", "pages/destinations.html");
             });
-            const dataReturn = data.photos.photo[0];
-            const imgUrl = `https://farm${dataReturn.farm}.staticflickr.com/${dataReturn.server}/${dataReturn.id}_${dataReturn.secret}.jpg`;
-            let image = $("<img>").attr("src", imgUrl);
-            let description = $("<div class='content'>");
-            let title = $("<h2>").text(destinationData[i].destination);
-            let caption = $("<h3>").text(destinationData[i].destination);
+            const image = $("<img>").attr("src", imgUrl);
+            console.log("url: ", image);
+            const description = $("<div class='content'>");
+            const title = $("<h2>").text(destinationData[i].destination);
+            const caption = $("<h3>").text(destinationData[i].caption);
 
             description.append(title);
             description.append(caption);
