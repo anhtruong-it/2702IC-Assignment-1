@@ -1,6 +1,6 @@
 const apiKey = "84bcbeb63edc1c2b591367fcc07c81c1";
 $(document).ready(async function () {
-
+    menuDropdown();
     await displayThumbnails();
 
     await displayRecentViewed();
@@ -183,30 +183,6 @@ function recentViewedPhoto(id) {
     localStorage.setItem("recentViewedPhotos", JSON.stringify(existingRecentViewedList));
 }
 
-function photoPreview() {
-    $("#photoInputs").on("change", function (event) {
-        let files = event.target.files;
-        let preview = $("#photosPreview");
-        preview.empty();
-
-        for (let i = 0; i < files.length; i++) {
-            let file = files[i];
-            let reader = new FileReader();
-
-            reader.onload = function (e) {
-                let photo = $("<img>");
-                photo.attr("src", e.target.result);
-                photo.css({ width: "100px", height: "100px" });
-                preview.append(photo);
-                console.log("photo: ", photo);
-            }
-
-
-            reader.readAsDataURL(file);
-        }
-    });
-}
-
 async function displayRecentViewed() {
     let viewedPhotosString = localStorage.getItem("recentViewedPhotos");
     if (viewedPhotosString != null) {
@@ -217,4 +193,10 @@ async function displayRecentViewed() {
 async function RecentViewed(viewedPhotosString) {
     let viewedPhotos = viewedPhotosString ? JSON.parse(viewedPhotosString) : [];
     await fetchPhoto(viewedPhotos, viewedPhotos.length, "recent");
+}
+
+function menuDropdown() {
+    $(".dropdown").click(function () {
+        $(this).find(".dropdown-content").toggle();
+    });
 }

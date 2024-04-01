@@ -6,6 +6,8 @@ const pixabayApi = "43144252-c0d9ad58dba53c4092267a584";
 
 $(document).ready(function () {
     //.removeItem("recentViewedPhotos");
+    // Initialize the slider
+    initSlider('.slider-container', 3000);
     menuDropdown();
 
     getHomePageAlbum();
@@ -95,10 +97,10 @@ function getSize(photo) {
         $.when(
             $.get(getPhotoStr),
             $.get(getSizeStr)
-        ).done(function(photoData, sizeData) {
+        ).done(function (photoData, sizeData) {
             let thumb = sizeData[0].sizes.size[1].source;
             let fullSize = sizeData[0].sizes.size[sizeData[0].sizes.size.length - 1].source;
-            let photos = [{ file: thumb, full: fullSize, id: photo.id, title: photoData[0].photo.title._content}];
+            let photos = [{ file: thumb, full: fullSize, id: photo.id, title: photoData[0].photo.title._content }];
             resolve(photos);
         });
     });
@@ -160,7 +162,51 @@ function closeNav() {
 }
 
 function menuDropdown() {
-    $(".dropdown").click(function() {
+    $(".dropdown").click(function () {
         $(this).find(".dropdown-content").toggle();
     });
 }
+
+function initSlider(containerSelector, interval) {
+    let slideIndex = 0;
+    const container = $(containerSelector);
+    const slides = container.children('.slider').children('img');
+    const dots = container.find('.dot');
+
+    function changeBanner(index) {
+      slideIndex = index;
+      slides.hide();
+      dots.removeClass('active');
+      $(slides[slideIndex]).show();
+      $(dots[slideIndex]).addClass('active');
+    }
+
+    function nextSlide() {
+      slideIndex++;
+      if (slideIndex >= slides.length) {
+        slideIndex = 0;
+      }
+      changeBanner(slideIndex);
+    }
+
+    let timer = setInterval(nextSlide, interval);
+
+    // Pause the slider on hover
+    container.on('mouseenter', function() {
+      clearInterval(timer);
+    });
+
+    // Resume the slider on mouseout
+    container.on('mouseleave', function() {
+      timer = setInterval(nextSlide, interval);
+    });
+
+    // Handle click event for dots
+    container.find('.dot').on('click', function() {
+      const index = $(this).index();
+      changeBanner(index);
+      clearInterval(timer);
+    });
+  }
+
+
