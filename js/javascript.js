@@ -6,6 +6,8 @@ const pixabayApi = "43144252-c0d9ad58dba53c4092267a584";
 
 $(document).ready(function () {
     //.removeItem("recentViewedPhotos");
+    menuDropdown();
+
     getHomePageAlbum();
     displayRecentViewed();
 
@@ -155,4 +157,10 @@ function openNav() {
 function closeNav() {
     $("#mySidenav").css("width", "0");
     $("#main").css("marginLeft", "0");
+}
+
+function menuDropdown() {
+    $(".dropdown").click(function() {
+        $(this).find(".dropdown-content").toggle();
+    });
 }

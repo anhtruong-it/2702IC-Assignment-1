@@ -14,7 +14,28 @@
   </head>
 
   <body>
-    <div class="header">
+    <div class="header-bar">
+      <ul id="menu">
+      <div class="menu">
+        <li><a href="../index.html">Home</a></li>
+        <li><a href="#">News</a></li>
+        <li><a href="#">Contact</a></li>
+        <li style="float: right"><a href="#">About</a></li>
+</div>
+        <div class="menu-dropdown">
+          <li class="dropdown" style="float: left">
+            <a href="javascript:void(0);" class="dropbtn">Menu</a>
+            <div class="dropdown-content">
+              <a href="../index.html">Home</a>
+              <a href="#">News</a>
+              <a href="#">Contact</a>
+              <a href="#">About</a>
+            </div>
+          </li>
+        </div>
+      </ul>
+    </div>
+    <!-- <div class="header">
       <span class="menu" onclick="openNav()">&#9776;</span>
       <h1>Welcome to Queensland Tourisms</h1>
       <div id="mySidenav" class="sidenav">
@@ -23,7 +44,7 @@
         >
         <a href="#">Add Destination</a>
       </div>
-    </div>
+    </div> -->
     <div class="recent" id="recent"></div>
     <div class="container" id="container"></div>
     <div id="modal-container">
