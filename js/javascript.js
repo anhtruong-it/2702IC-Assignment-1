@@ -5,7 +5,6 @@ const apiKey = "84bcbeb63edc1c2b591367fcc07c81c1";
 const pixabayApi = "43144252-c0d9ad58dba53c4092267a584";
 
 $(document).ready(function () {
-    //.removeItem("recentViewedPhotos");
     // Initialize the slider
     initSlider('.slider-container', 3000);
     menuDropdown();

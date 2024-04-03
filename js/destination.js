@@ -26,8 +26,6 @@ $(document).ready(async function () {
 
         displayRecentViewed();
     });
-
-
 });
 
 // display 5 thumbnails of each destination
@@ -36,8 +34,7 @@ async function displayThumbnails() {
     const title = decodeURIComponent($.cookie("title"));
     $("#title").html(title);
 
-    const requestPhotos = `https://api.flickr.com/services/rest/?method=flickr.photos.search&per_page=5&text=${destination}&format=json&nojsoncallback=1&api_key=${apiKey}&sort=relevance`;
-
+    const requestPhotos = `https://www.flickr.com/services/rest/?method=flickr.photos.search&api_key=${apiKey}&text=${destination}&content_type=1&in_gallery=true&sort=interestingness-desc&privacy_filter=1&accuracy=1&per_page=5&format=json&nojsoncallback=1`
     const linkList = $("#container");
     linkList.empty();
 
