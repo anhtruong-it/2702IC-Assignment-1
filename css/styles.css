@@ -538,7 +538,7 @@ li a:hover:not(.active) {
 
 #recent-close {
     position: absolute;
-    top: 15px;
+    top: 50px;
     right: 35px;
     color: white;
     font-size: 40px;
