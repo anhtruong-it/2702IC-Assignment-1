@@ -1,35 +1,39 @@
-const apiKey = "84bcbeb63edc1c2b591367fcc07c81c1";
 $(document).ready(async function () {
-    menuDropdown();
-    await displayThumbnails();
+    const currentPath = window.location.pathname;
+    console.log("pathName: ", currentPath === "/pages/destinations.html");
+    if (currentPath === "/pages/destinations.html") {
+        menuDropdown();
+        await displayThumbnails();
 
-    await displayRecentViewed();
+        await displayRecentViewed();
 
-    // close button of modal
-    $("#modal-close").click(function () {
-        $("#modal-container").css("display", "none");
-        $("#modal-content").attr("src", "");
+        // close button of modal
+        $("#modal-close").click(function () {
+            $("#modal-container").css("display", "none");
+            $("#modal-content").attr("src", "");
 
-        const recent = $("#recent");
-        recent.empty();
+            const recent = $("#recent");
+            recent.empty();
 
-        displayRecentViewed();
-    });
+            displayRecentViewed();
+        });
 
-    // close button of recent modal
-    $("#recent-close").click(function () {
-        $("#recent-container").css("display", "none");
-        $("#recent-content").attr("src", "");
+        // close button of recent modal
+        $("#recent-close").click(function () {
+            $("#recent-container").css("display", "none");
+            $("#recent-content").attr("src", "");
 
-        const recent = $("#recent");
-        recent.empty();
+            const recent = $("#recent");
+            recent.empty();
 
-        displayRecentViewed();
-    });
+            displayRecentViewed();
+        });
+    }
 });
 
 // display 5 thumbnails of each destination
 async function displayThumbnails() {
+    const apiKey = "84bcbeb63edc1c2b591367fcc07c81c1";
     const destination = $.cookie("destination");
     const title = decodeURIComponent($.cookie("title"));
     $("#title").html(title);
@@ -78,7 +82,7 @@ async function fetchPhoto(data, number, state) {
 
 // get a size for a photo
 function getSize(photo, state) {
-
+    const apiKey = "84bcbeb63edc1c2b591367fcc07c81c1";
     if (state === "thumbnails") {
         const getPhotoStr = `https://api.flickr.com/services/rest/?method=flickr.photos.getInfo&format=json&nojsoncallback=1&api_key=${apiKey}&photo_id=${photo.id}`;
         const getSizeStr = `https://api.flickr.com/services/rest/?method=flickr.photos.getSizes&format=json&nojsoncallback=1&api_key=${apiKey}&photo_id=${photo.id}`;
@@ -159,7 +163,7 @@ function displayFullSize(photo, state) {
 
 // store recent viewed photo
 function recentViewedPhoto(id) {
-
+    console.log("display");
     let recentViewedList = localStorage.getItem("recentViewedPhotos");
     let existingRecentViewedList = recentViewedList ? JSON.parse(recentViewedList) : [];
 
@@ -192,8 +196,8 @@ async function RecentViewed(viewedPhotosString) {
     await fetchPhoto(viewedPhotos, viewedPhotos.length, "recent");
 }
 
-function menuDropdown() {
-    $(".dropdown").click(function () {
-        $(this).find(".dropdown-content").toggle();
-    });
-}
+// function menuDropdown() {
+//     $(".dropdown").click(function () {
+//         $(this).find(".dropdown-content").toggle();
+//     });
+// }

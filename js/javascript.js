@@ -5,22 +5,25 @@ const apiKey = "84bcbeb63edc1c2b591367fcc07c81c1";
 const pixabayApi = "43144252-c0d9ad58dba53c4092267a584";
 
 $(document).ready(function () {
-    // Initialize the slider
-    initSlider('.slider-container', 3000);
-    menuDropdown();
+    const currentPaths = window.location.pathname;
+    if (currentPaths === "/" || currentPaths === "/index.html") {
+        // Initialize the slider
+        initSlider('.slider-container', 3000);
+        menuDropdown();
 
-    getHomePageAlbum();
-    displayRecentViewed();
-
-    $("#modal-close").click(function () {
-        $("#modal-container").css("display", "none");
-        $("#modal-content").attr("src", "");
-
-        const recent = $("#recent");
-        recent.empty();
-
+        getHomePageAlbum();
         displayRecentViewed();
-    });
+
+        $("#modal-close").click(function () {
+            $("#modal-container").css("display", "none");
+            $("#modal-content").attr("src", "");
+
+            const recent = $("#recent");
+            recent.empty();
+
+            displayRecentViewed();
+        });
+    }
 });
 
 async function displayRecentViewed() {
@@ -173,39 +176,39 @@ function initSlider(containerSelector, interval) {
     const dots = container.find('.dot');
 
     function changeBanner(index) {
-      slideIndex = index;
-      slides.hide();
-      dots.removeClass('active');
-      $(slides[slideIndex]).show();
-      $(dots[slideIndex]).addClass('active');
+        slideIndex = index;
+        slides.hide();
+        dots.removeClass('active');
+        $(slides[slideIndex]).show();
+        $(dots[slideIndex]).addClass('active');
     }
 
     function nextSlide() {
-      slideIndex++;
-      if (slideIndex >= slides.length) {
-        slideIndex = 0;
-      }
-      changeBanner(slideIndex);
+        slideIndex++;
+        if (slideIndex >= slides.length) {
+            slideIndex = 0;
+        }
+        changeBanner(slideIndex);
     }
 
     let timer = setInterval(nextSlide, interval);
 
     // Pause the slider on hover
-    container.on('mouseenter', function() {
-      clearInterval(timer);
+    container.on('mouseenter', function () {
+        clearInterval(timer);
     });
 
     // Resume the slider on mouseout
-    container.on('mouseleave', function() {
-      timer = setInterval(nextSlide, interval);
+    container.on('mouseleave', function () {
+        timer = setInterval(nextSlide, interval);
     });
 
     // Handle click event for dots
-    container.find('.dot').on('click', function() {
-      const index = $(this).index();
-      changeBanner(index);
-      clearInterval(timer);
+    container.find('.dot').on('click', function () {
+        const index = $(this).index();
+        changeBanner(index);
+        clearInterval(timer);
     });
-  }
+}
 
 
