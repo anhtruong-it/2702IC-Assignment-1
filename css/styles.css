@@ -549,7 +549,7 @@ li a:hover:not(.active) {
 #recent-content {
     display: block;
     margin: auto;
-    width: 80%;
+    width: 60%;
     height: 80%;
 }
 
