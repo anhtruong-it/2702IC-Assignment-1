@@ -89,6 +89,7 @@ function getSize(photo, state) {
         ).done(function (photoData, sizeData) {
             const thumb = sizeData[0].sizes.size[3].source;
             const fullSize = sizeData[0].sizes.size[sizeData[0].sizes.size.length - 1].source;
+            const fixedSize = sizeData[0].sizes.size[5].source;
             const dateString = photoData[0].photo.dates.taken;
             const date = new Date(dateString);
             const setDate = { year: "numeric", month: "short", day: "numeric" };
