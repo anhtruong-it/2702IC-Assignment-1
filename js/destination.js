@@ -1,9 +1,10 @@
 const apiKey = "84bcbeb63edc1c2b591367fcc07c81c1";
 $(document).ready(async function () {
     menuDropdown();
-    await displayThumbnails();
+    getDestinationNames();
+    getTitle();
+    displayRecentViewed();
 
-    await displayRecentViewed();
 
     // close button of modal
     $("#modal-close").click(function () {
@@ -28,11 +29,66 @@ $(document).ready(async function () {
     });
 });
 
+// get destination names
+async function getDestinationNames() {
+    const linkList = $("#categories");
+    linkList.empty();
+
+    try {
+        const destinationData = await $.get("data/destination.json");
+        destinationData.forEach(function(destination) {
+            console.log("destination: ", destination.destination);
+            const encodedDestination = encodeURIComponent(destination.destination);
+            const subLink = $("<a>")
+                .attr("href", `/${destination.destination}`)
+                .text(destination.destination);
+            subLink.click(function (event) {
+                event.preventDefault();
+                //$.cookie("title", encodeURIComponent(destination.destination));
+                localStorage.setItem("destination", JSON.stringify(destination.destination));
+                localStorage.setItem("title", JSON.stringify(destination.destination));
+                $.cookie("destination", encodedDestination);
+                
+                displayThumbnails();
+            });
+            linkList.append(subLink).append("<br>");
+        })
+        
+    } catch (error) {
+        console.error("error fetching destination names: ", error);
+    }
+}
+
+function getTitle() {
+    let title = localStorage.getItem("stage");
+    let stringWithoutQuotes = title.replace(/^"|"$/g, '');
+    console.log("local: ", stringWithoutQuotes);
+    
+    if(stringWithoutQuotes != "undefined") {
+        console.log("local: ", stringWithoutQuotes);
+        $("#title").html(stringWithoutQuotes);
+        displayThumbnails();
+        localStorage.setItem("stage", "undefined");
+    }
+
+    console.log(title);
+    
+
+        
+    
+}
+
 // display 5 thumbnails of each destination
 async function displayThumbnails() {
-    const destination = $.cookie("destination");
-    const title = decodeURIComponent($.cookie("title"));
-    $("#title").html(title);
+    let title = (localStorage.getItem("title")).replace(/^"|"$/g, '');
+    console.log(title);
+    if (title != "undefined") {
+        $("#title").html(title);
+        localStorage.setItem("title", JSON.stringify("undefined"));
+    }
+    
+    let des = (localStorage.getItem("destination")).replace(/^"|"$/g, '');
+    const destination = des
 
     const requestPhotos = `https://www.flickr.com/services/rest/?method=flickr.photos.search&api_key=${apiKey}&text=${destination}&content_type=1&in_gallery=true&sort=interestingness-desc&privacy_filter=1&accuracy=1&per_page=5&format=json&nojsoncallback=1`
     const linkList = $("#container");

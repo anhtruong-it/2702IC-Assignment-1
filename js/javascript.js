@@ -10,17 +10,8 @@ $(document).ready(function () {
     menuDropdown();
 
     getHomePageAlbum();
-    displayRecentViewed();
 
-    $("#modal-close").click(function () {
-        $("#modal-container").css("display", "none");
-        $("#modal-content").attr("src", "");
 
-        const recent = $("#recent");
-        recent.empty();
-
-        displayRecentViewed();
-    });
 });
 
 async function displayRecentViewed() {
@@ -32,11 +23,12 @@ async function displayRecentViewed() {
 
 // fetch and display homepage photos
 async function getHomePageAlbum() {
+    console.log("home")
     const linkList = $("#container");
     linkList.empty();
 
     try {
-        const destinationData = await $.get("data/destination.json");
+        const destinationData = await $.get("../data/destination.json");
         for (let i = 0; i < destinationData.length; i++) {
             const destinationSearch = destinationData[i].destination;
             const encodedDestination = encodeURIComponent(destinationSearch);
@@ -48,12 +40,14 @@ async function getHomePageAlbum() {
             const imgUrl = data.hits[0].webformatURL;
             const photoBox = $("<div>").addClass("photo-box");
 
-            const subLink = $("<a class='link-destination'>").attr("href", "pages/destinations.html");
+            const subLink = $("<a class='link-destination'>").attr("href", "../destinations.html");
             subLink.click(function (event) {
                 event.preventDefault();
                 $.cookie("title", encodeURIComponent(destinationData[i].destination));
                 $.cookie("destination", encodedDestination);
-                $(location).attr("href", "pages/destinations.html");
+                localStorage.setItem("destination", JSON.stringify(destinationSearch));
+                localStorage.setItem("stage", JSON.stringify(destinationData[i].destination));
+                $(location).attr("href", "../destinations.html");
             });
             const image = $("<img>").attr("src", imgUrl);
             const description = $("<div class='content'>");
@@ -66,16 +60,15 @@ async function getHomePageAlbum() {
             subLink.append(description);
             photoBox.append(subLink);
             linkList.append(photoBox);
+            
+            
+            
         }
     } catch (error) {
         console.error("error fetching album: ", error);
     }
 }
 
-async function RecentViewed(viewedPhotosString) {
-    const viewedPhotos = viewedPhotosString ? JSON.parse(viewedPhotosString) : [];
-    await fetchPhoto(viewedPhotos, viewedPhotos.length);
-}
 
 async function fetchPhoto(data, number) {
     let photoData = data.map(photo => ({
