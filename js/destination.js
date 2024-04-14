@@ -8,28 +8,20 @@ $(document).ready(async function () {
 
     getTitle();
 
-
+    displayRecentViewed();
 
     // close button of modal
     $("#modal-close").click(function () {
+        console.log("closed");
         $("#modal-container").css("display", "none");
         $("#modal-content").attr("src", "");
-
-        const recent = $("#recent");
-        recent.empty();
-
-        displayRecentViewed();
     });
 
     // close button of recent modal
     $("#recent-close").click(function () {
+        console.log("closed");
         $("#recent-container").css("display", "none");
         $("#recent-content").attr("src", "");
-
-        const recent = $("#recent");
-        recent.empty();
-
-        displayRecentViewed();
     });
 });
 
@@ -190,6 +182,8 @@ function displayFullSize(photo, state) {
             $("#modal-content").attr("src", $(this).attr("data-full"));
             $("#modal-caption").text(photo[0].title);
             recentViewedPhoto(photo[0].id);
+            const recent = $("#recent");
+            recent.empty();
             displayRecentViewed();
         });
     } else if (state === "recent") {
@@ -210,6 +204,8 @@ function displayFullSize(photo, state) {
             $("#recent-content").attr("src", $(this).attr("data-full"));
             $("#recent-caption").text(clickedPhoto[0].title);
             recentViewedPhoto(clickedPhoto[0].id);
+            const recent = $("#recent");
+            recent.empty();
             displayRecentViewed();
         });
     }
