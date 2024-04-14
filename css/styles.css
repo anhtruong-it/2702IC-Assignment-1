@@ -18,8 +18,6 @@
     flex-direction: column;
 }
 
-
-
 .category {
     flex: 1;
 
@@ -101,14 +99,14 @@ li a:hover:not(.active) {
 
 .photo-box {
     font-size: 14px;
-    border: 2px solid black;
+    border: 0px solid black;
     padding: 10px;
     margin: 5px;
     text-align: left;
-    min-height: 300px;
+    height: 300px;
     width: 100%;
     overflow: hidden;
-    border-radius: 10px;
+    border-radius: 70px;
     justify-items: center;
     justify-content: center;
     align-items: center;
@@ -129,34 +127,27 @@ li a:hover:not(.active) {
     -webkit-box-shadow: 0px 5px 40px -10px rgba(0, 0, 0, 0.57);
     -moz-box-shadow: 0px 5px 40px -10px rgba(0, 0, 0, 0.57);
     box-shadow: 0px 5px 40px -10px rgba(0, 0, 0, 0.57);
-    /* Standard box-shadow property */
     transition: all 0.9s ease 0s;
     background-color: white;
     transform: scale(1.05);
-    /* Scale the element slightly on hover */
 }
 
 .photo-box:hover::before {
     content: '';
-    /* Adding a pseudo-element */
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
     background-color: rgba(255, 255, 255, 0.2);
-    /* Semi-transparent overlay */
     z-index: -1;
-    /* Place it behind the element */
     transition: opacity 0.3s ease;
-    /* Smooth transition for the overlay */
 }
 
 
 
 .photo-box:hover::before {
     opacity: 1;
-    /* Make the overlay and icon visible on hover */
 }
 
 .photo-box:hover .content h3 {
@@ -164,19 +155,11 @@ li a:hover:not(.active) {
 }
 
 .container {
-    /* flex: 1 0 33.33%;
-    display: flex;
-    gap: 21px;
-    padding-left: 20px;
-    padding-right: 20px;
-    justify-content: center;
-    flex-wrap: wrap;
-    position: relative; */
-
     flex: 4;
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
+    gap: 0px;
 }
 
 @media all and (min-width: 1024px) {
@@ -197,10 +180,6 @@ li a:hover:not(.active) {
     .recent {
         flex-direction: column;
 
-    }
-
-    .container {
-        flex-basis: 33.33%
     }
 
     .photo-box {
@@ -233,9 +212,6 @@ li a:hover:not(.active) {
 
     }
 
-    .container {
-        flex-basis: 50%;
-    }
 
     .photo-box {
         max-width: calc(50% - 50px);
@@ -249,10 +225,6 @@ li a:hover:not(.active) {
 }
 
 @media all and (max-width: 767px) {
-    .container {
-        flex-basis: 100%;
-    }
-
     .box {
         margin-top: 75px;
         margin-bottom: 60px;

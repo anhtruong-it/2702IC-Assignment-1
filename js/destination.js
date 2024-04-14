@@ -1,9 +1,13 @@
+// inital Flickr api key
 const apiKey = "84bcbeb63edc1c2b591367fcc07c81c1";
+
 $(document).ready(async function () {
     menuDropdown();
+
     getDestinationNames();
+
     getTitle();
-    displayRecentViewed();
+
 
 
     // close button of modal
@@ -29,66 +33,61 @@ $(document).ready(async function () {
     });
 });
 
-// get destination names
+// menu section
+function menuDropdown() {
+    $(".dropdown").click(function () {
+        $(this).find(".dropdown-content").toggle();
+    });
+}
+
+// destination names section
 async function getDestinationNames() {
     const linkList = $("#categories");
     linkList.empty();
 
     try {
+        // retrieve destination names from a JSON file
         const destinationData = await $.get("data/destination.json");
-        destinationData.forEach(function(destination) {
-            console.log("destination: ", destination.destination);
-            const encodedDestination = encodeURIComponent(destination.destination);
+        destinationData.forEach(function (destination) {
+            let name = destination.destination;
             const subLink = $("<a>")
-                .attr("href", `/${destination.destination}`)
-                .text(destination.destination);
+                .attr("href", `/${name}`)
+                .text(name);
+
             subLink.click(function (event) {
                 event.preventDefault();
-                //$.cookie("title", encodeURIComponent(destination.destination));
-                localStorage.setItem("destination", JSON.stringify(destination.destination));
-                localStorage.setItem("title", JSON.stringify(destination.destination));
-                $.cookie("destination", encodedDestination);
-                
+                localStorage.setItem("destination", JSON.stringify(name));
+                localStorage.setItem("title", JSON.stringify(name));
                 displayThumbnails();
             });
+
             linkList.append(subLink).append("<br>");
-        })
-        
+        });
     } catch (error) {
         console.error("error fetching destination names: ", error);
     }
 }
 
+// title of each chosen destination from HomePage
 function getTitle() {
-    let title = localStorage.getItem("stage");
-    let stringWithoutQuotes = title.replace(/^"|"$/g, '');
-    console.log("local: ", stringWithoutQuotes);
-    
-    if(stringWithoutQuotes != "undefined") {
-        console.log("local: ", stringWithoutQuotes);
-        $("#title").html(stringWithoutQuotes);
-        displayThumbnails();
-        localStorage.setItem("stage", "undefined");
+    let title = (localStorage.getItem("title")).replace(/^"|"$/g, '');
+    if (title != "undefined") {
+        $("#title").html(title);
     }
-
-    console.log(title);
-    
-
-        
-    
+    displayThumbnails();
 }
 
 // display 5 thumbnails of each destination
 async function displayThumbnails() {
+
+
     let title = (localStorage.getItem("title")).replace(/^"|"$/g, '');
-    console.log(title);
+    let destination = (localStorage.getItem("destination")).replace(/^"|"$/g, '');
+
     if (title != "undefined") {
         $("#title").html(title);
-        localStorage.setItem("title", JSON.stringify("undefined"));
+
     }
-    
-    let des = (localStorage.getItem("destination")).replace(/^"|"$/g, '');
-    const destination = des
 
     const requestPhotos = `https://www.flickr.com/services/rest/?method=flickr.photos.search&api_key=${apiKey}&text=${destination}&content_type=1&in_gallery=true&sort=interestingness-desc&privacy_filter=1&accuracy=1&per_page=5&format=json&nojsoncallback=1`
     const linkList = $("#container");
@@ -104,10 +103,11 @@ async function displayThumbnails() {
     }
 }
 
-// fetch a photo
+// fetch photos
 async function fetchPhoto(data, number, state) {
 
     let photoData;
+
     if (state === "thumbnails") {
         photoData = data.map(photo => ({
             id: photo.id,
@@ -169,7 +169,6 @@ function getSize(photo, state) {
             });
         });
     }
-
 }
 
 // display all photos of a destination
@@ -191,6 +190,7 @@ function displayFullSize(photo, state) {
             $("#modal-content").attr("src", $(this).attr("data-full"));
             $("#modal-caption").text(photo[0].title);
             recentViewedPhoto(photo[0].id);
+            displayRecentViewed();
         });
     } else if (state === "recent") {
         photo.sort((a, b) => a.id - b.id);
@@ -202,6 +202,7 @@ function displayFullSize(photo, state) {
 
             $("#recent").append(htmlStr);
         });
+
         $(".recent-photos").click(function () {
             const photosIndex = $(this).attr("data-index");
             const clickedPhoto = photo[photosIndex];
@@ -209,12 +210,12 @@ function displayFullSize(photo, state) {
             $("#recent-content").attr("src", $(this).attr("data-full"));
             $("#recent-caption").text(clickedPhoto[0].title);
             recentViewedPhoto(clickedPhoto[0].id);
+            displayRecentViewed();
         });
     }
-
 }
 
-// store recent viewed photo
+// store recent viewed photos
 function recentViewedPhoto(id) {
 
     let recentViewedList = localStorage.getItem("recentViewedPhotos");
@@ -249,8 +250,4 @@ async function RecentViewed(viewedPhotosString) {
     await fetchPhoto(viewedPhotos, viewedPhotos.length, "recent");
 }
 
-function menuDropdown() {
-    $(".dropdown").click(function () {
-        $(this).find(".dropdown-content").toggle();
-    });
-}
+
