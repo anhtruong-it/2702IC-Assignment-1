@@ -4,6 +4,10 @@
     font-family: Open Sans;
 }
 
+.main-background {
+    background: linear-gradient(90deg, #e3edee, #87d1e7);
+}
+
 .box {
     margin-top: 75px;
     margin-bottom: 60px;
@@ -25,6 +29,31 @@
 
 .categories {
     padding-left: 10px;
+
+}
+
+.category-item {
+    text-decoration: none;
+    color: #684e25;
+    font-weight: bold;
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+}
+
+.category-item:hover,
+.category-item:active {
+    background: linear-gradient(90deg, #ff8a05, #f9b331);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 0 0 18px rgba(248, 190, 42, 0.8);
+}
+
+.active {
+    background: linear-gradient(90deg, #ff8a05, #f9b331);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
 }
 
 .title {
@@ -97,21 +126,42 @@ li a:hover:not(.active) {
     margin-left: 10px;
 }
 
-.photo-box {
+
+figure {
     font-size: 14px;
     border: 0px solid black;
+    margin: 5px;
+    text-align: center;
+    height: 300px;
+    width: 300px;
+    overflow: hidden;
+    border-radius: 30px;
+    justify-items: center;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(90deg, #e3edee, #87d1e7);
+}
+
+figure img {
+    max-width: 100%; /* Ensures the image doesn't exceed its container */
+    height: auto; /* Maintains aspect ratio */
+  }
+
+.photo-box {
+    font-size: 14px;
+    border: .5px solid black;
     padding: 10px;
     margin: 5px;
     text-align: left;
-    height: 300px;
+    height: 100%;
     width: 100%;
     overflow: hidden;
-    border-radius: 70px;
+    border-radius: 10px;
     justify-items: center;
     justify-content: center;
     align-items: center;
     background-color: white;
-}
+} 
 
 .photo-box img {
     width: 100%;
@@ -141,16 +191,49 @@ li a:hover:not(.active) {
     height: 100%;
     background-color: rgba(255, 255, 255, 0.2);
     z-index: -1;
+    opacity: 1;
     transition: opacity 0.3s ease;
 }
 
 
-
-.photo-box:hover::before {
-    opacity: 1;
+.photo-box:hover .content h3 {
+    letter-spacing: 0;
 }
 
-.photo-box:hover .content h3 {
+figure img {
+    width: 100%;
+    height: 200px;
+    border-radius: 10px;
+}
+
+figure:hover {
+    color: #404040 !important;
+    font-weight: 700 !important;
+    letter-spacing: 3px;
+    background: none;
+    -webkit-box-shadow: 0px 5px 40px -10px rgba(0, 0, 0, 0.57);
+    -moz-box-shadow: 0px 5px 40px -10px rgba(0, 0, 0, 0.57);
+    box-shadow: 0px 5px 40px -10px rgba(0, 0, 0, 0.57);
+    transition: all 0.9s ease 0s;
+    background-color: white;
+    transform: scale(1.05);
+}
+
+figure:hover::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.2);
+    z-index: -1;
+    opacity: 1;
+    transition: opacity 0.3s ease;
+}
+
+
+figure:hover .content h3 {
     letter-spacing: 0;
 }
 
@@ -159,7 +242,7 @@ li a:hover:not(.active) {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    gap: 0px;
+    gap: 20px;
 }
 
 @media all and (min-width: 1024px) {

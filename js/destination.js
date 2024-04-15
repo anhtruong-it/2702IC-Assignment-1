@@ -2,13 +2,8 @@
 const apiKey = "84bcbeb63edc1c2b591367fcc07c81c1";
 
 $(document).ready(async function () {
+
     menuDropdown();
-
-    getDestinationNames();
-
-    getTitle();
-
-    displayRecentViewed();
 
     // close button of modal
     $("#modal-close").click(function () {
@@ -23,6 +18,13 @@ $(document).ready(async function () {
         $("#recent-container").css("display", "none");
         $("#recent-content").attr("src", "");
     });
+
+    getDestinationNames();
+
+    getTitle();
+
+    displayRecentViewed();
+
 });
 
 // menu section
@@ -43,6 +45,7 @@ async function getDestinationNames() {
         destinationData.forEach(function (destination) {
             let name = destination.destination;
             const subLink = $("<a>")
+                .addClass("category-item")
                 .attr("href", `/${name}`)
                 .text(name);
 
@@ -51,6 +54,8 @@ async function getDestinationNames() {
                 localStorage.setItem("destination", JSON.stringify(name));
                 localStorage.setItem("title", JSON.stringify(name));
                 displayThumbnails();
+                $(".category-item").removeClass("active");
+                $(this).addClass("active");
             });
 
             linkList.append(subLink).append("<br>");
@@ -166,7 +171,7 @@ function getSize(photo, state) {
 // display all photos of a destination
 function displayFullSize(photo, state) {
     if (state === "thumbnails") {
-        const photoBox = $("<div>").addClass("photo-box");
+        const photoBox = $("<div>");
 
         const htmlStr = `<figure data-full="${photo[0].full}">
             <img src="${photo[0].file}" alt="${photo[0].title}">
