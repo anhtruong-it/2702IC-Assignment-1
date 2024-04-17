@@ -4,6 +4,8 @@ const apiKey = "84bcbeb63edc1c2b591367fcc07c81c1";
 $(document).ready(async function () {
 
     menuDropdown();
+    scrollSection();
+    scrollToTop();
 
     // close button of modal
     $("#modal-close").click(function () {
@@ -251,4 +253,34 @@ async function RecentViewed(viewedPhotosString) {
     await fetchPhoto(viewedPhotos, viewedPhotos.length, "recent");
 }
 
+function scrollSection() {
+    $("a[href^='#']").on('click', function (e) {
+        e.preventDefault();
+
+        var target = this.hash;
+        var $target = $(target);
+
+        $('html, body').stop().animate({
+            'scrollTop': $target.offset().top
+        }, 900, 'swing', function () {
+            window.location.hash = target;
+        });
+    });
+}
+
+function scrollToTop() {
+    let mybutton = $("#myBtn");
+
+    $(window).scroll(function () {
+        if ($(this).scrollTop() > 20) {
+            mybutton.css("display", "block");
+        } else {
+            mybutton.css("display", "none");
+        }
+    });
+
+    mybutton.click(function () {
+        $("html, body").animate({ scrollTop: 0 }, "slow");
+    });
+}
 

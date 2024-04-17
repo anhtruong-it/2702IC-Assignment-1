@@ -5,6 +5,8 @@ const pixabayApi = "43144252-c0d9ad58dba53c4092267a584";
 $(document).ready(function () {
 
     menuDropdown();
+    scrollToTop();
+    scrollSection();
 
     initSlider('.slider-container', 3000);
 
@@ -106,6 +108,39 @@ function initSlider(containerSelector, interval) {
         const index = $(this).index();
         changeBanner(index);
         clearInterval(timer);
+    });
+}
+
+// scrolling down to Footer
+function scrollSection() {
+    $("a[href^='#']").on('click', function (e) {
+        e.preventDefault();
+
+        var target = this.hash;
+        var $target = $(target);
+
+        $('html, body').stop().animate({
+            'scrollTop': $target.offset().top
+        }, 900, 'swing', function () {
+            window.location.hash = target;
+        });
+    });
+}
+
+// scrolling top button
+function scrollToTop() {
+    let mybutton = $("#myBtn");
+
+    $(window).scroll(function () {
+        if ($(this).scrollTop() > 20) {
+            mybutton.css("display", "block");
+        } else {
+            mybutton.css("display", "none");
+        }
+    });
+
+    mybutton.click(function () {
+        $("html, body").animate({ scrollTop: 0 }, "slow");
     });
 }
 

@@ -11,6 +11,10 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
   <script src="../js/destination.js"></script>
   <script src="https://www.gstatic.com/dialogflow-console/fast/messenger/bootstrap.js?v=1"></script>
+  <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+    />
   <link rel="stylesheet" href="../css/styles.css" />
 </head>
 
@@ -21,8 +25,8 @@
         <li><a class="menu-a" href="../pages/endedFearture.html">Home</a></li>
         <li><a class="menu-a" href="../index.html">Destinations</a></li>
         <li><a class="menu-a" href="#">News</a></li>
-        <li><a class="menu-a" href="#">Contact</a></li>
-        <li style="float: right"><a class="menu-a" href="#">About</a></li>
+        <li><a class="menu-a" href="#contact">Contact</a></li>
+        <li style="float: right"><a class="menu-a" href="#contact">About</a></li>
       </div>
       <div class="menu-dropdown">
         <li class="dropdown" style="float: left">
@@ -31,8 +35,8 @@
             <a href="../pages/endedFearture.html">Home</a>
             <a href="../index.html">Destinations</a>
             <a href="#">News</a>
-            <a href="#">Contact</a>
-            <a href="#">About</a>
+            <a href="#contact">Contact</a>
+            <a href="#contact">About</a>
           </div>
         </li>
       </div>
@@ -60,23 +64,19 @@
 
     <div class="sub-box">
       <div class="container" id="container"></div>
-      
-
       <div class="recent" id="recent"></div>
-      
     </div>
-
   </div>
-  <df-messenger intent="WELCOME" chat-title="NewAgent" agent-id="f407d26f-c72a-4b1d-a426-0b94b56d2bf6"
-    language-code="en"></df-messenger>
+  <button onclick="topFunction()" id="myBtn" title="Go to top">^</button>
+
 </body>
 
-<footer class="footer-distributed">
+<footer id="contact" class="footer-distributed">
   <div class="footer-left">
     <h3>2702ICT<span>A1</span></h3>
 
     <p class="footer-links">
-      <a href="../endedFearture.html">Home</a>
+      <a href="../pages/endedFearture.html">Home</a>
 
       <a href="#">Blog</a>
 
@@ -120,9 +120,9 @@
 
     <div class="footer-icons">
       <a href="#"><i class="fab fa-facebook-f"></i></a>
-      <a href="#"><i class="fab fa-twitter"></i></a>
-      <a href="#"><i class="fab fa-linkedin"></i></a>
-      <a href="#"><i class="fab fa-instagram"></i></a>
+        <a href="#"><i class="fab fa-twitter"></i></a>
+        <a href="#"><i class="fab fa-linkedin"></i></a>
+        <a href="#"><i class="fab fa-instagram"></i></a>
     </div>
   </div>
 </footer>
